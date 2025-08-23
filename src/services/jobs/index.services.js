@@ -1,4 +1,4 @@
-import { applyNewJob, fetchJobsUserWise, getAllJobList, getJobById, jobPost } from "./jobs.services.js";
+import { applyNewJob, editJobByEmployer, fetchJobsUserWise, getAllJobList, getBookmarkJobUserWise, getJobById, getSingleBookmarkById, jobPost, removeBookmarkById, removeJobById, saveBookmarkJobs } from "./jobs.services.js";
 
 const JobServices = {
     applyNewJob,
@@ -6,6 +6,12 @@ const JobServices = {
     jobPost,
     getAllJobList,
     getJobById,
+    saveBookmarkJobs,
+    getBookmarkJobUserWise,
+    getSingleBookmarkById,
+    removeBookmarkById,
+    removeJobById,
+    editJobByEmployer,
 };
 
 export default JobServices;

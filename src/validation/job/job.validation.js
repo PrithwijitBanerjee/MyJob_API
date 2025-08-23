@@ -1,6 +1,10 @@
 import { body } from "express-validator";
 
 export const jobPostValidationRules = () => [
+    body('jobLogo')
+        .trim()
+        .notEmpty()
+        .withMessage("Job Logo is required"),
     body("jobTitle")
         .trim()
         .notEmpty()

@@ -51,7 +51,7 @@ export const signInUser = async (req, res, next) => {
             email,
             fullName,
             typeOfUser: user?._doc?.typeOfUser
-        }, dev.app.jwtSecretKey, '1h');
+        }, dev.app.jwtSecretKey, '1d');
         successResponseHandler(res, {
             status: AllStatusCodes.OK,
             message: `Welcome ${user?._doc?.fullName} greetings to our website`,

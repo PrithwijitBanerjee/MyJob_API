@@ -1,4 +1,4 @@
-import { applyJob, fetchAllJobs, fetchSingleJobById, getUserWiseJobs, postNewJob, viewUserWiseAppliedJob } from "./jobs.controller.js";
+import { applyJob, deleteBookmarkById, deleteJobByEmployer, fetchAllBookmarkJobsUserWise, fetchAllJobs, fetchSingleJobById, getUserWiseJobs, postBookMarkJob, postNewJob, updateJobByEmployer, viewUserWiseAppliedJob } from "./jobs.controller.js";
 
 const JobController = {
     applyJob,
@@ -7,6 +7,11 @@ const JobController = {
     fetchAllJobs,
     fetchSingleJobById,
     viewUserWiseAppliedJob,
+    postBookMarkJob,
+    fetchAllBookmarkJobsUserWise,
+    deleteBookmarkById,
+    deleteJobByEmployer,
+    updateJobByEmployer,
 };
 
 export default JobController;

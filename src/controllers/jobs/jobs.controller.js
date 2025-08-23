@@ -179,8 +179,117 @@ export const viewUserWiseAppliedJob = async (req, res, next) => {
             status: AllStatusCodes.OK,
             message: 'All Applied Jobs list has been fetched successfully',
             payload: {
-                jobs,
+                ...jobs[0],
             },
+        });
+    } catch (error) {
+        next(CreateError(AllStatusCodes.InternalServerError, error?.message));
+    }
+};
+
+export const postBookMarkJob = async (req, res, next) => {
+    try {
+        const bookmarkJob = await JobServices.saveBookmarkJobs({
+            ...req.body,
+            userId: req.userId,
+        });
+        if (!bookmarkJob) {
+            return next(CreateError(AllStatusCodes.BadRequest, 'Bookmark Job not saved, Invalid Client Request!!!'));
+        }
+        successResponseHandler(res, {
+            status: AllStatusCodes.Created,
+            message: 'Your Job has been saved successfully',
+            payload: {
+                ...bookmarkJob?._doc,
+            },
+        });
+    } catch (error) {
+        next(CreateError(AllStatusCodes.InternalServerError, error?.message));
+    }
+};
+
+export const fetchAllBookmarkJobsUserWise = async (req, res, next) => {
+    try {
+        const jobs = await JobServices.getBookmarkJobUserWise(req.userId);
+        successResponseHandler(res, {
+            status: AllStatusCodes.OK,
+            message: 'Bookmarked Job list has been fetched successfully',
+            payload: {
+                ...jobs[0],
+            },
+        });
+    } catch (error) {
+        next(CreateError(AllStatusCodes.InternalServerError, error?.message));
+    }
+};
+
+export const deleteBookmarkById = async (req, res, next) => {
+    try {
+        const bookmark = await JobServices.getSingleBookmarkById(req.userId);
+        if (!bookmark) {
+            return next(CreateError(AllStatusCodes.NotFound, "Can not delete bookmark as it does not exist!!!"));
+        }
+        const delRes = await JobServices.removeBookmarkById(req.userId, req.params.id);
+        if (!delRes) {
+            return next(CreateError(AllStatusCodes.NotFound, `Bookmark deletion failed, Job id: ${req.params.id} not found on this job bookmark`));
+        }
+        successResponseHandler(res, {
+            status: AllStatusCodes.OK,
+            message: 'Job bookmark has been deleted successfully',
+            payload: {
+                ...delRes?._doc,
+            }
+        });
+    } catch (error) {
+        next(CreateError(AllStatusCodes.InternalServerError, error?.message));
+    }
+};
+
+
+export const deleteJobByEmployer = async (req, res, next) => {
+    try {
+        const job = await JobServices.getJobById(req.params.id);
+        if (!job) {
+            return next(CreateError(AllStatusCodes.NotFound, `Job deletion failed, as job id: ${req.params.id} does not exist!!!`));
+        }
+        const delRes = await JobServices.removeJobById(req.params.id);
+        if (!delRes) {
+            return next(CreateError(AllStatusCodes.BadRequest, "Job deletion failed, Invalid Client Request !!!"));
+        }
+        successResponseHandler(res, {
+            status: AllStatusCodes.OK,
+            message: `Job id: ${req.params?.id} has been deleted successfully`,
+            payload: {
+                ...job?._doc,
+            },
+        });
+    } catch (error) {
+        next(CreateError(AllStatusCodes.InternalServerError, error?.message));
+    }
+};
+
+
+export const updateJobByEmployer = async (req, res, next) => {
+    try {
+        if (req.method !== "PUT" && req.method !== "PATCH") {
+            return next(CreateError(AllStatusCodes.MethodNotAllowed, `Job updation failed, ${req.method} method is not allowed!!!`));
+        }
+        const job = await JobServices.getJobById(req.params.id);
+        if (!job) {
+            return next(CreateError(AllStatusCodes.NotFound, `Job updation failed, as job id: ${req.params.id} does not exist!!!`));
+        }
+        const updatedJob = await JobServices.editJobByEmployer(req.params.id, {
+            ...req.body,
+        });
+        if (!updatedJob) {
+            return next(CreateError(AllStatusCodes.BadRequest, "Job updation failed, Invalid Client Request !!!"));
+        }
+        successResponseHandler(res, {
+            status: AllStatusCodes.OK,
+            message: `Job id: ${req.params.id} has been updated successfully`,
+            payload: {
+                ...updatedJob?._doc,
+            }
         });
     } catch (error) {
         next(CreateError(AllStatusCodes.InternalServerError, error?.message));

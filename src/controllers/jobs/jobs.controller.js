@@ -295,3 +295,17 @@ export const updateJobByEmployer = async (req, res, next) => {
         next(CreateError(AllStatusCodes.InternalServerError, error?.message));
     }
 };
+
+
+export const getAllPostedJobsByEmployer = async (req, res, next) => {
+    try {
+        const jobs = await JobServices.getAllPostedJobsByEmployer(req.userId);
+        successResponseHandler(res, {
+            status: AllStatusCodes.OK,
+            message: 'Posted Job list has been fetched successfully',
+            payload: jobs,
+        });
+    } catch (error) {
+        next(CreateError(AllStatusCodes.InternalServerError, error?.message));
+    }
+};

@@ -33,6 +33,10 @@ JobRouter.get('/allJobs', JobController.fetchAllJobs)
     .delete('/bookmark-job/:id', JobController.deleteBookmarkById)
 
     .use(isEmployer)
+
+    /** Get all posted Jobs by Employer ...GET **/
+    .get('/posted-jobs', JobController.getAllPostedJobsByEmployer)
+
     /** Post a new Job .../POST **/
     .post('/create-job', JobValidation.jobPostValidationRules(), sanitizeReq, JobController.postNewJob)
 

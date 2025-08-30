@@ -243,3 +243,15 @@ export const editJobByEmployer = async (jobId, jobData) => {
         throw new Error(error);
     }
 };
+
+
+export const getAllPostedJobsByEmployer = async employerId => {
+    try {
+        const jobs = await JobModel.find({ employerId });
+        // console.log("jobs: ", jobs);
+        
+        return jobs;
+    } catch (error) {
+        throw new Error(error);
+    }
+};

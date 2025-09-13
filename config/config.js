@@ -13,7 +13,7 @@ const dev = {
     db: {
         dbName: process.env.DB_NAME,
         dbPort: process.env.DB_PORT,
-        dbUrl: process.env.NODE_ENV === "production" ? process.env.DB_ATLAS_URL : process.env.DB_URL,
+        dbUrl: process.env.DB_URL || "mongodb://localhost:27017",
     }
 };
 

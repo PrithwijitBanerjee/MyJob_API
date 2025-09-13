@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      DB_URL: mongodb://mongodb:27017
+      DB_NAME: myjob
+    depends_on:
+      - mongodb
+    networks:
+      - my-network
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - my-network
+
+volumes:
+  mongo-data:
+networks:
+  my-network:
+    driver: bridge

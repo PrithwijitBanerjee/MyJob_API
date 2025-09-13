@@ -73,8 +73,22 @@ export const clearUserOTP = async (userId) => {
 
 export const addUserPersonalProfile = async userData => {
     try {
-        const personalDoc = new PersonalModel(userData);
-        const personalData = await personalDoc.save();
+        const isPersonalExist = await PersonalModel.findOne({
+            userId: userData?.userId,
+        });
+        let personalData = null;
+        if (isPersonalExist) {
+            personalData = await PersonalModel.findOneAndUpdate({
+                userId: userData?.userId,
+            }, {
+                ...userData,
+            }, {
+                new: true,
+            });
+        } else {
+            const personalDoc = new PersonalModel(userData);
+            personalData = await personalDoc.save();
+        }
         return personalData;
     } catch (error) {
         throw new Error(error);
@@ -83,8 +97,22 @@ export const addUserPersonalProfile = async userData => {
 
 export const addUserProfile = async userData => {
     try {
-        const profileDoc = new ProfileModel(userData);
-        const profileData = await profileDoc.save();
+        const isPersonalExist = await ProfileModel.findOne({
+            userId: userData?.userId,
+        });
+        let profileData = null;
+        if (isPersonalExist) {
+            profileData = await ProfileModel.findOneAndUpdate({
+                userId: userData?.userId,
+            }, {
+                ...userData,
+            }, {
+                new: true,
+            });
+        } else {
+            const profileDoc = new ProfileModel(userData);
+            profileData = await profileDoc.save();
+        }
         return profileData;
     } catch (error) {
         throw new Error(error);
